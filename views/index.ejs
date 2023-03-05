@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Mc Status</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<div class="container">
+		<h1>Mc Status</h1>
+		<div class="form1">
+			<label for="serverIP">Server IP:</label>
+			<input type="text" id="serverIP" name="serverIP" placeholder="node1.example.com" required>
+			<label for="serverPort">Server Port:</label>
+			<input type="number" id="serverPort" name="serverPort" placeholder="26656 (Optional)" required>
+			<button id="checkStatus" onclick="get()">Check Status</button>
+        </div>
+		<div id="serverStatus">
+			<h2>Server Status</h2>
+			<div class="status-info">
+				<label>Name:</label>
+				<span id="serverName"></span>
+			</div><br>
+			<div class="status-info">
+				<label>IP:</label>
+				<span id="serverip"></span>
+			</div><br>
+			<div class="status-info">
+				<label>Port:</label>
+				<span id="serverport"></span>
+			</div><br>
+			<div class="status-info">
+				<label>Online:</label>
+				<span id="serverOnline"></span>
+			</div><br>
+			<div class="status-info">
+				<label>Players:</label>
+				<span id="serverPlayers"></span>
+			</div><br>
+			<div class="status-info">
+				<label>Version:</label>
+				<span id="serverVersion"></span>
+			</div>
+		</div>
+	</div>
+
+    <footer>
+        <p><strong>Made with <span>&hearts;</span> by ItzCrazyKns</strong></p>
+    </footer>
+</body>
+</html>
+
+<script>
+    async function get() {
+        ip = encodeURIComponent(document.getElementById("serverIP").value)
+        port = encodeURIComponent(document.getElementById("serverPort").value)
+        fetch(`/api/status/java?serverip=${ip}&port=${port}`)
+        .then(response => response.json())
+        .then(json => {
+            document.getElementById("serverName").textContent = ip
+            document.getElementById("serverip").textContent = json.ip
+            document.getElementById("serverport").textContent = json.port
+            document.getElementById("serverOnline").textContent = json.online ? 'Yes' : 'No'
+            document.getElementById("serverVersion").textContent = json.version
+            document.getElementById("serverPlayers").textContent = json.current + ` / ` + json.max
+            document.getElementById("serverStatus").style.display = "block";
+        })
+    }
+</script>
+
+<style>
+    footer {
+        color: #000000;
+        text-align: center;
+        padding: 20px;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background: none;
+    }
+    
+    footer p {
+        margin: 0;
+    }
+    
+    footer p span {
+        color: red;
+    }
+
+    button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 12px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+    
+    button:hover {
+        background-color: #3e8e41;
+    }
+    
+    button:active {
+        background-color: #3e8e41;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }
+
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f2f2f2;
+    overflow: hidden;
+}
+
+.container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 20px;
+	background-color: #fff;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.form1 {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+label {
+	margin-right: 10px;
+}
+
+input[type="text"], input[type="number"], input[type="test"] {
+	padding: 10px;
+	border-radius: 5px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+
+input[type="test"] {
+	background-color: #4CAF50;
+	color: #fff;
+	cursor: pointer;
+}
+
+#serverStatus {
+	padding: 20px;
+	background-color: #f2f2f2;
+	border-radius: 5px;
+	display: none;
+}
+
+#serverStatus.active {
+	display: block;
+}
+
+</style>
+

@@ -16,7 +16,8 @@ app.get('/', async (req,res) => {
 app.get('/api/status/java', async (req,res) => {
     if(!req.query.serverip) return res.send("Invalid Server Id Or Port")
     if(!req.query.port) req.query.port = 25565
-    let status = {}
+    try {
+        let status = {}
     if(req.query.port == 25565) {
         await fetch("https://api.mcsrvstat.us/2/" + req.query.serverip)
         .then(response => response.json())
@@ -58,6 +59,10 @@ app.get('/api/status/java', async (req,res) => {
             }
         })
     }
+    } catch(err) {
+        console.log(err)   
+    }
+    
 
     res.send(status)
 })
